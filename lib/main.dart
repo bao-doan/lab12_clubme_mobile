@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lab12_clubme_mobile/constants.dart';
+import 'package:lab12_clubme_mobile/data/music_data.dart';
+import 'package:lab12_clubme_mobile/player_page/player_page.dart';
+import 'package:lab12_clubme_mobile/player_page/playlist_page.dart';
+import 'package:lab12_clubme_mobile/providers/player_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,13 +16,37 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Clubme by Lab12',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.pinkAccent,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => PlayerProvider(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Clubme by Lab12',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.pinkAccent,
+            textTheme: TextTheme(
+              headline4: TextStyle(
+                color: kTextColor,
+              ),
+              headline5: TextStyle(
+                color: kTextColor,
+              ),
+              headline6: TextStyle(
+                color: kTextColor,
+              ),
+              subtitle1: TextStyle(
+                color: kTextColor.withOpacity(0.6),
+              ),
+              bodyText1: TextStyle(
+                color: kTextColor,
+              ),
+            )
+        ),
+        home: PlaylistPage(),
       ),
-      home: Scaffold(),
     );
   }
 }
