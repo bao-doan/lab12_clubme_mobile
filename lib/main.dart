@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lab12_clubme_mobile/constants.dart';
-import 'package:lab12_clubme_mobile/data/music_data.dart';
-import 'package:lab12_clubme_mobile/player_page/player_page.dart';
-import 'package:lab12_clubme_mobile/player_page/playlist_page.dart';
-import 'package:lab12_clubme_mobile/providers/player_provider.dart';
+import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
+import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
+import 'package:lab12_clubme_mobile/core/data/music_data.dart';
+import 'package:lab12_clubme_mobile/ui/pages/player_page/player_page.dart';
+import 'package:lab12_clubme_mobile/ui/pages/playlist_page/playlist_page.dart';
+import 'package:lab12_clubme_mobile/core/providers/player_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -18,9 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => PlayerProvider(),
-        )
+        ChangeNotifierProvider(create: (context) => PlayerProvider(),),
+        ChangeNotifierProvider(create: (context) => SongProvider(),),
       ],
       child: MaterialApp(
         title: 'Clubme by Lab12',

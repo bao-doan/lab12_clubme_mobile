@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:lab12_clubme_mobile/constants.dart';
-import 'package:lab12_clubme_mobile/data/music_data.dart';
-import 'package:lab12_clubme_mobile/player_page/player_page.dart';
-import 'package:lab12_clubme_mobile/providers/player_provider.dart';
-import 'package:lab12_clubme_mobile/widgets/lib_like_button.dart';
-import 'package:lab12_clubme_mobile/widgets/lib_more_button.dart';
+import 'package:lab12_clubme_mobile/core/models/song_model.dart';
+import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
+// import 'package:lab12_clubme_mobile/core/data/music_data.dart';
+import 'package:lab12_clubme_mobile/ui/pages/player_page/player_page.dart';
+import 'package:lab12_clubme_mobile/core/providers/player_provider.dart';
+import 'package:lab12_clubme_mobile/ui/components/lib_like_button.dart';
+import 'package:lab12_clubme_mobile/ui/components/lib_more_button.dart';
+import 'package:lab12_clubme_mobile/ui/utils/payload_helper.dart';
 import 'package:provider/provider.dart';
 
 class SongItem extends StatelessWidget {
@@ -44,9 +46,10 @@ class SongItem extends StatelessWidget {
               height: 50.0,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(_song.albumArtUrl),
+                  image: PayloadHelper.imageFromSong(_song),
                   fit: BoxFit.cover,
                 ),
+                color: Colors.greenAccent
               ),
             ),
           ),
@@ -70,7 +73,7 @@ class SongItem extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '${_song.artist}',
+                      '${_song.artist!.name}',
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontSize: 12,
                       ),
@@ -87,7 +90,7 @@ class SongItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Unknown Album',
+                      '${_song.album!.title}',
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontSize: 12,
                       ),
@@ -99,7 +102,7 @@ class SongItem extends StatelessWidget {
           ),
           // Spacer(),
           LibLikeButton(
-            selected: _song.favourite,
+            selected: false,
             onTap: (value) {
               print('$value');
             },

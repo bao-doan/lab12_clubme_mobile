@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:lab12_clubme_mobile/constants.dart';
-import 'package:lab12_clubme_mobile/data/music_data.dart';
-import 'package:lab12_clubme_mobile/providers/player_provider.dart';
-import 'package:lab12_clubme_mobile/widgets/lib_background.dart';
+import 'package:lab12_clubme_mobile/core/models/song_model.dart';
+import 'package:lab12_clubme_mobile/ui/components/lib_vinyl.dart';
+import 'package:lab12_clubme_mobile/ui/utils/asset_image.dart';
+import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
+// import 'package:lab12_clubme_mobile/core/data/music_data.dart';
+import 'package:lab12_clubme_mobile/core/providers/player_provider.dart';
+import 'package:lab12_clubme_mobile/ui/components/lib_background.dart';
+import 'package:lab12_clubme_mobile/ui/utils/format_helper.dart';
+import 'package:lab12_clubme_mobile/ui/utils/payload_helper.dart';
 import 'package:provider/provider.dart';
 
 class PlayerPage extends StatefulWidget {
@@ -41,7 +46,7 @@ class _PlayerPageState extends State<PlayerPage> {
     return Consumer<PlayerProvider>(
       builder: (context, provider, child) => Scaffold(
         body: LibBackground(
-          albumArt: widget.song.albumArt,
+          albumArt: widget.song.image?.secure_url ?? '',
           child: SafeArea(
             bottom: false,
             child: Column(
@@ -102,26 +107,26 @@ class _PlayerPageState extends State<PlayerPage> {
         ),
         SizedBox(height: 30.0,),
         Center(
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(widget.song.albumArt),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(30.0),
-                // shape: BoxShape.circle
-              ),
-            ),
+          child: LibVinyl(
+            spinning: true,
           ),
         ),
         SizedBox(height: 20.0,),
         Center(
           child: Text(
-            widget.song.title,
+            widget.song.title!,
             style: Theme.of(context).textTheme.headline5!.copyWith(
                 color: kTextColor,
+                fontWeight: FontWeight.w700
+            ),
+          ),
+        ),
+        SizedBox(height: 10.0,),
+        Center(
+          child: Text(
+            widget.song.artist?.name ?? '',
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                color: kTextColor.withOpacity(0.7),
                 fontWeight: FontWeight.w700
             ),
           ),
@@ -143,8 +148,8 @@ class _PlayerPageState extends State<PlayerPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.black54,
-              Colors.black87,
+              Colors.black.withOpacity(0.7),
+              Colors.black.withOpacity(1),
             ]
         ),
         borderRadius: BorderRadius.only(
@@ -205,13 +210,14 @@ class _PlayerPageState extends State<PlayerPage> {
     final provider = Provider.of<PlayerProvider>(context);
     final _position = provider.position;
     final _duration = provider.duration;
+    // final _duration = provider.song?.audio?.duration ?? 100;
     final currentTime = '${_position.inMinutes}:${_position.inSeconds < 10 ? '0' + _position.inSeconds.toString() : _position.inSeconds}';
     final totalTime = '${_duration.inMinutes}:${_duration.inSeconds < 10 ? '0' + _duration.inSeconds.toString() : _duration.inSeconds}';
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          currentTime,
+          FormatHelper.getDurationTimer(provider.position.inSeconds.toDouble()),
           style: TextStyle(
               color: Colors.white
           ),
@@ -228,7 +234,8 @@ class _PlayerPageState extends State<PlayerPage> {
             child: Slider(
               value: provider.position.inSeconds.toDouble(),
               min: 0,
-              max: provider.duration.inSeconds.toDouble(),
+              // max: provider.duration.inSeconds.toDouble(),
+              max: provider.song?.audio?.duration ?? 120,
               onChanged: (value) {
                 provider.onSeektoSec(value.toInt());
               },
@@ -240,7 +247,7 @@ class _PlayerPageState extends State<PlayerPage> {
         ),
         // SizedBox(width: 10,),
         Text(
-          totalTime,
+          FormatHelper.getDurationTimer(provider.song?.audio?.duration ?? 0),
           style: TextStyle(
               color: Colors.white
           ),

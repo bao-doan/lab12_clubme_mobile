@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:lab12_clubme_mobile/constants.dart';
-import 'package:lab12_clubme_mobile/data/music_data.dart';
+import 'package:lab12_clubme_mobile/core/api/resources/song_rest.dart';
+import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
+import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
+import 'package:lab12_clubme_mobile/core/data/music_data.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:lab12_clubme_mobile/player_page/player_page.dart';
-import 'package:lab12_clubme_mobile/providers/player_provider.dart';
-import 'package:lab12_clubme_mobile/widgets/lib_background.dart';
-import 'package:lab12_clubme_mobile/widgets/lib_quickplay_panel.dart';
-import 'package:lab12_clubme_mobile/widgets/lib_song_item.dart';
+import 'package:lab12_clubme_mobile/core/api/rest_client_mixin.dart';
+import 'package:lab12_clubme_mobile/ui/pages/player_page/player_page.dart';
+import 'package:lab12_clubme_mobile/core/providers/player_provider.dart';
+import 'package:lab12_clubme_mobile/ui/components/lib_background.dart';
+import 'package:lab12_clubme_mobile/ui/components/lib_quickplay_panel.dart';
+import 'package:lab12_clubme_mobile/ui/components/lib_song_item.dart';
 import 'package:provider/provider.dart';
 
 class PlaylistPage extends StatefulWidget {
@@ -19,6 +22,12 @@ class PlaylistPage extends StatefulWidget {
 class _PlaylistPageState extends State<PlaylistPage> {
 
   @override
+  void initState() {
+    super.initState();
+    // Provider.of<SongProvider>(context).fetch();
+  }
+
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
@@ -27,7 +36,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PlayerProvider>(
+    Provider.of<SongProvider>(context).fetch();
+    return Consumer<SongProvider>(
       builder: (context, provider, child) => Scaffold(
         body: LibBackground(
           child: SafeArea(
@@ -82,7 +92,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                     ),
                                     child: SongItem(
                                       song: provider.list[i],
-                                      playing: provider.list[i].id == Provider.of<PlayerProvider>(context).songId,
+                                      playing: provider.list[i].uid == Provider.of<PlayerProvider>(context).songId,
                                     ),
                                   ),
                                 SizedBox(

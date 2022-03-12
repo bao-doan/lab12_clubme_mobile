@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lab12_clubme_mobile/constants.dart';
+import 'package:lab12_clubme_mobile/ui/utils/asset_image.dart';
+import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:lab12_clubme_mobile/player_page/player_page.dart';
-import 'package:lab12_clubme_mobile/providers/player_provider.dart';
+import 'package:lab12_clubme_mobile/ui/pages/player_page/player_page.dart';
+import 'package:lab12_clubme_mobile/core/providers/player_provider.dart';
+import 'package:lab12_clubme_mobile/ui/utils/payload_helper.dart';
 import 'package:provider/provider.dart';
 
 class LibQuickPlayPanel extends StatelessWidget {
@@ -37,16 +39,17 @@ class LibQuickPlayPanel extends StatelessWidget {
                     aspectRatio: 1,
                     child: GestureDetector(
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(builder: (context) => PlayerPage(song:
-                        //     ))
-                        // );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>
+                              provider.song == null ? Container() : PlayerPage(song: provider.song!)
+                            )
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage(provider.song!.albumArt),
+                            image: PayloadHelper.imageFromImage(provider.song?.image),
                             fit: BoxFit.cover,
                           ),
                           shape: BoxShape.circle
@@ -57,7 +60,7 @@ class LibQuickPlayPanel extends StatelessWidget {
                   SizedBox(width: 10,),
                   Expanded(
                     child: Text(
-                      provider.song!.title,
+                      provider.song!.title!,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(

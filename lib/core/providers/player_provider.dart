@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lab12_clubme_mobile/data/music_data.dart';
+import 'package:lab12_clubme_mobile/core/models/song_model.dart';
+// import 'package:lab12_clubme_mobile/core/data/music_data.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -22,18 +23,19 @@ class PlayerProvider extends ChangeNotifier {
   Duration get duration => _duration;
   bool get playing => _playing;
   Song? get song => _song;
-  String? get songId => _song != null ? _song!.id : '';
+  // String? get songId => _song != null ? _song!.uid : '';
+  String? get songId => _song?.uid ?? '';
 
   List<Song> _list = [];
   List<Song> get list => _list;
 
-  fetchList() async {
-    print('PROVIDER.LIST.FETCH');
-    await Future.delayed(Duration(seconds: 3));
-    _list = sampleSongs;
-    notifyListeners();
-    print('PROVIDER.LIST.LENGTH ${_list.length}');
-  }
+  // fetchList() async {
+  //   print('PROVIDER.LIST.FETCH');
+  //   await Future.delayed(Duration(seconds: 3));
+  //   _list = sampleSongs;
+  //   notifyListeners();
+  //   print('PROVIDER.LIST.LENGTH ${_list.length}');
+  // }
 
   void setPlaying(bool playing) {
     _playing = playing;
@@ -46,7 +48,7 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   PlayerProvider() {
-    fetchList();
+    // fetchList();
     setupPlayer();
   }
 
@@ -125,7 +127,7 @@ class PlayerProvider extends ChangeNotifier {
 
   playNewSong({required Song song}) async {
     _song = song;
-    await _player.play(song.fileUrl);
+    await _player.play(song.audio!.secure_url!);
     _playing = true;
     notifyListeners();
   }

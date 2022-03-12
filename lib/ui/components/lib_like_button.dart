@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lab12_clubme_mobile/constants.dart';
+import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 
 class LibLikeButton extends StatefulWidget {
