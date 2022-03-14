@@ -2,7 +2,7 @@
 import 'package:lab12_clubme_mobile/core/models/base_model.dart';
 import 'package:lab12_clubme_mobile/core/models/cloudinary_meta_model.dart';
 
-class Audio extends BaseModel {
+class Audio implements BaseModel {
 
   String? access_mode;
 
@@ -54,6 +54,18 @@ class Audio extends BaseModel {
 
   int? width;
 
+  @override
+  String? createdAt;
+
+  @override
+  String? status;
+
+  @override
+  String? uid;
+
+  @override
+  String? updatedAt;
+
   Audio({
     this.access_mode,
     this.asset_id,
@@ -79,6 +91,10 @@ class Audio extends BaseModel {
     this.version,
     this.version_id,
     this.width,
+    this.createdAt,
+    this.status,
+    this.uid,
+    this.updatedAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -107,6 +123,10 @@ class Audio extends BaseModel {
       'version': this.version,
       'version_id': this.version_id,
       'width': this.width,
+      'createdAt': this.createdAt,
+      'status': this.status,
+      'uid': this.uid,
+      'updatedAt': this.updatedAt,
     };
   }
 
@@ -136,6 +156,15 @@ class Audio extends BaseModel {
       version: map['version'] as int,
       version_id: map['version_id'] as String,
       width: map['width'] as int,
+      createdAt: map['createdAt'] as String,
+      status: map['status'] as String,
+      uid: map['uid'] as String,
+      updatedAt: map['updatedAt'] as String,
     );
+  }
+
+  @override
+  String toString() {
+    return 'Audio{access_mode: $access_mode, asset_id: $asset_id, audio: $audio, bit_rate: $bit_rate, bytes: $bytes, created_at: $created_at, duration: $duration, etag: $etag, format: $format, height: $height, is_audio: $is_audio, original_filename: $original_filename, pages: $pages, placeholder: $placeholder, public_id: $public_id, resource_type: $resource_type, secure_url: $secure_url, signature: $signature, tags: $tags, type: $type, url: $url, version: $version, version_id: $version_id, width: $width, createdAt: $createdAt, status: $status, uid: $uid, updatedAt: $updatedAt}';
   }
 }

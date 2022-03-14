@@ -1,6 +1,6 @@
 import 'package:lab12_clubme_mobile/core/models/base_model.dart';
 
-class Image extends BaseModel {
+class Image implements BaseModel {
   String? access_mode;
 
   String? asset_id;
@@ -39,6 +39,8 @@ class Image extends BaseModel {
 
   int? width;
 
+
+
   Image({
     this.access_mode,
     this.asset_id,
@@ -58,6 +60,10 @@ class Image extends BaseModel {
     this.version,
     this.version_id,
     this.width,
+    this.createdAt,
+    this.status,
+    this.uid,
+    this.updatedAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -80,6 +86,10 @@ class Image extends BaseModel {
       'version': this.version,
       'version_id': this.version_id,
       'width': this.width,
+      'createdAt': this.createdAt,
+      'status': this.status,
+      'uid': this.uid,
+      'updatedAt': this.updatedAt,
     };
   }
 
@@ -103,6 +113,22 @@ class Image extends BaseModel {
       version: map['version'] as int,
       version_id: map['version_id'] as String,
       width: map['width'] as int,
+      createdAt: map['createdAt'] as String,
+      status: map['status'] as String,
+      uid: map['uid'] as String,
+      updatedAt: map['updatedAt'] as String,
     );
   }
+
+  @override
+  String? createdAt;
+
+  @override
+  String? status;
+
+  @override
+  String? uid;
+
+  @override
+  String? updatedAt;
 }

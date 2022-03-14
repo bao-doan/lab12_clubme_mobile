@@ -4,10 +4,8 @@ import 'package:lab12_clubme_mobile/core/api/rest_interface.dart';
 import 'package:lab12_clubme_mobile/core/models/song_model.dart';
 
 class SongRest with RestClientMixin<Song> implements ServiceInterface<Song> {
+  @override
   String baseUrl = 'songs';
-  // Future<Response<List<Song>>> getSongs() {
-  //   return get(baseUrl);
-  // }
 
   @override
   Future<Song> createOne(item) {

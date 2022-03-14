@@ -3,6 +3,9 @@ import 'package:lab12_clubme_mobile/core/api/resources/song_rest.dart';
 import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_bottom_navigation.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_glassmorphism.dart';
+import 'package:lab12_clubme_mobile/ui/pages/playlist_page/local_widgets/lib_card_artist.dart';
+import 'package:lab12_clubme_mobile/ui/pages/playlist_page/local_widgets/section_albums.dart';
+import 'package:lab12_clubme_mobile/ui/pages/playlist_page/local_widgets/section_artists.dart';
 import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
 import 'package:lab12_clubme_mobile/core/data/music_data.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,63 +55,70 @@ class _PlaylistPageState extends State<PlaylistPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 10.0,
-                        right: 10.0,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Text  (
-                            'Explore',
-                            style: Theme.of(context).textTheme.headline5!.copyWith(
-                              fontWeight: FontWeight.w900,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 10.0,
+                          right: 10.0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 20.0,
                             ),
-                          ),
-                          Text(
-                            '${provider.list.length} songs',
-                            style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                              fontSize: 12,
-                              height: 1.5
+
+                            SectionArtists(),
+                            SizedBox(
+                              height: 20.0,
                             ),
-                          ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Expanded(
-                            child: provider.list.isEmpty
-                            ? Center(child: CircularProgressIndicator(color: kAccentColor,))
-                            : SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  for (int i = 0; i < provider.list.length; i++)
-                                    Dismissible(
-                                      key: Key(i.toString()),
-                                      background: Container(
-                                        color: Colors.transparent,
-                                        margin: EdgeInsets.only(bottom: 10.0),
-                                      ),
-                                      secondaryBackground: Container(
-                                        color: Colors.amber,
-                                        margin: EdgeInsets.only(bottom: 10.0),
-                                      ),
-                                      child: SongItem(
-                                        song: provider.list[i],
-                                        playing: provider.list[i].uid == Provider.of<PlayerProvider>(context).songId,
-                                      ),
-                                    ),
-                                  SizedBox(
-                                    height: 20.0,
-                                  ),
-                                ],
+                            SectionAlbums(),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Text  (
+                              'Explore',
+                              style: Theme.of(context).textTheme.headline5!.copyWith(
+                                fontWeight: FontWeight.w900,
                               ),
                             ),
-                          ),
-                        ],
+                            Text(
+                              '${provider.list.length} songs',
+                              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                fontSize: 12,
+                                height: 1.5
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            provider.list.isEmpty
+                            ? Center(child: CircularProgressIndicator(color: kAccentColor,))
+                            : Column(
+                              children: [
+                                for (int i = 0; i < provider.list.length; i++)
+                                  Dismissible(
+                                    key: Key(i.toString()),
+                                    background: Container(
+                                      color: Colors.transparent,
+                                      margin: EdgeInsets.only(bottom: 10.0),
+                                    ),
+                                    secondaryBackground: Container(
+                                      color: Colors.amber,
+                                      margin: EdgeInsets.only(bottom: 10.0),
+                                    ),
+                                    child: SongItem(
+                                      song: provider.list[i],
+                                      playing: provider.list[i].uid == Provider.of<PlayerProvider>(context).songId,
+                                    ),
+                                  ),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

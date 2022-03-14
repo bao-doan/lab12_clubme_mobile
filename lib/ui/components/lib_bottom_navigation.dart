@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_glassmorphism.dart';
 import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
@@ -31,8 +32,8 @@ class _LibBottomNavigationState extends State<LibBottomNavigation> {
               label: 'Explore',
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.disc_full_outlined),
-                label: 'Playlist'
+                icon: Icon(CupertinoIcons.heart_fill),
+                label: 'Favorites'
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
