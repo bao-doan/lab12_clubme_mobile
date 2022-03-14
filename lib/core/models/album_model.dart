@@ -5,9 +5,9 @@ import 'package:lab12_clubme_mobile/core/models/image_model.dart';
 class Album extends BaseModel {
   String? title;
 
-  String? artist;
+  Artist? artist;
 
-  String? image;
+  Image? image;
 
   Album({
     this.title,
@@ -26,8 +26,8 @@ class Album extends BaseModel {
   factory Album.fromMap(Map<String, dynamic> map) {
     return Album(
       title: map['title'] as String,
-      artist: map['artist'] as String,
-      image: map['image'] as String,
+      artist: Artist.fromMap(map['artist']),
+      image: Image.fromMap(map['image']),
     );
   }
 }

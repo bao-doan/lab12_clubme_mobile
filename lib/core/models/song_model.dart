@@ -41,7 +41,7 @@ class Song extends BaseModel {
     return Song(
       title: map['title'] as String,
       audio: Audio.fromMap(map['audio']),
-      image: map['image'] != null ? Image.fromMap(map['image']) : Image(),
+      image: map['image'] != null ? Image.fromMap(map['image'] ?? '') : Image(),
       artist: Artist.fromMap(map['artist']),
       album: Album.fromMap(map['album']),
     );

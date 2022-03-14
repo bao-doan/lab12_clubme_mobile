@@ -7,7 +7,7 @@ class Artist extends BaseModel {
 
   String? title;
 
-  String? image;
+  Image? image;
 
   String? user;
 
@@ -31,8 +31,8 @@ class Artist extends BaseModel {
     return Artist(
       name: map['name'] as String,
       title: map['title'] as String,
-      image: map['image'] as String,
-      user: map['user'] as String,
+      image: Image.fromMap(map['image']),
+      user: map['user'] ?? 'no_user',
     );
   }
 }

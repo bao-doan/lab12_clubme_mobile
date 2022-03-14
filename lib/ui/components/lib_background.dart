@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:lab12_clubme_mobile/ui/components/lib_glassmorphism.dart';
 import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
 import 'package:lab12_clubme_mobile/core/data/music_data.dart';
 import 'package:lab12_clubme_mobile/ui/utils/payload_helper.dart';
@@ -42,12 +43,7 @@ class LibBackground extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-              child: Container(
-                color: Colors.black.withOpacity(0.6),
-              )
-            ),
+            LibGlassmorphism(),
             _child!
           ],
         ),

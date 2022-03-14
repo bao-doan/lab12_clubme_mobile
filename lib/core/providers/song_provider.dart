@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:lab12_clubme_mobile/core/api/auth/auth_rest.dart';
 import 'package:lab12_clubme_mobile/core/api/resources/song_rest.dart';
 import 'package:lab12_clubme_mobile/core/models/song_model.dart';
 import 'package:dio/dio.dart';
 class SongProvider extends ChangeNotifier {
   final SongRest rest = SongRest();
+  final AuthRest auth = AuthRest();
   List<Song> _items = [];
   List<Song> get items => _items;
   List<Song> get list => _items;
@@ -19,10 +21,12 @@ class SongProvider extends ChangeNotifier {
         _items = data;
         waiting = false;
         fetched = true;
+
+        // final authData = auth.login();
         notifyListeners();
       }
       catch (e) {
-        print(e);
+        print('SongProvider $e');
       }
 
     }
