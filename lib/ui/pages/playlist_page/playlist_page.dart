@@ -6,6 +6,7 @@ import 'package:lab12_clubme_mobile/ui/components/lib_glassmorphism.dart';
 import 'package:lab12_clubme_mobile/ui/pages/playlist_page/local_widgets/lib_card_artist.dart';
 import 'package:lab12_clubme_mobile/ui/pages/playlist_page/local_widgets/section_albums.dart';
 import 'package:lab12_clubme_mobile/ui/pages/playlist_page/local_widgets/section_artists.dart';
+import 'package:lab12_clubme_mobile/ui/pages/playlist_page/local_widgets/section_tags.dart';
 import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
 import 'package:lab12_clubme_mobile/core/data/music_data.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,7 +49,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
         body: Consumer<PlayerProvider>(
           builder: (playerContext, playerProvider, playerChild) => LibBackground(
             // albumArt: 'http://res.cloudinary.com/bao-doan/image/upload/v1646882185/clubme/images/h14amecj7uok2oapzjrb.jpg',
-            albumArt: playerProvider.song?.image?.secure_url ?? '',
+            // albumArt: playerProvider.song?.image?.secure_url ?? '',
             child: SafeArea(
               bottom: false,
               child: Column(
@@ -69,6 +70,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
                             ),
 
                             SectionArtists(),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            SectionTags(),
                             SizedBox(
                               height: 20.0,
                             ),
