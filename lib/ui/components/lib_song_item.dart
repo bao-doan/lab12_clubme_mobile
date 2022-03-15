@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/models/song_model.dart';
+import 'package:lab12_clubme_mobile/ui/dialogs/add_playlist_dialog.dart';
 import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
 // import 'package:lab12_clubme_mobile/core/data/music_data.dart';
 import 'package:lab12_clubme_mobile/ui/pages/player_page/player_page.dart';
@@ -108,7 +109,15 @@ class SongItem extends StatelessWidget {
             },
           ),
           SizedBox(width: 10,),
-          LibMoreButton(),
+          LibMoreButton(
+            onTap: () {
+              showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) => AddPlaylistDialog(),
+              );
+            },
+          ),
         ],
       ),
     );

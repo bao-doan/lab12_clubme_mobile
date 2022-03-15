@@ -36,6 +36,7 @@ class AppPref {
   static prefs() {
     return SharedPreferences.getInstance();
   }
+
   static setLocalUser(User user) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('clubme_user', json.encode(user));
@@ -56,5 +57,50 @@ class AppPref {
 
   static removeLocalUser() async{
     final prefs = await SharedPreferences.getInstance();
+  }
+
+  /** Song, Player data */
+
+  static String LOCAL_FAVORITES_TOKEN = 'local_favorites';
+
+  static getAllLocalFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    final local = prefs.getStringList(LOCAL_FAVORITES_TOKEN);
+    print('local $local');
+    return local;
+
+  }
+  static appendLocalFavorites() async {
+    final String id = '62297185cb2e1ef77881ddd2';
+    // 62297185cb2e1ef77881ddd2
+    final prefs = await SharedPreferences.getInstance();
+    final List<String>? local = prefs.getStringList(LOCAL_FAVORITES_TOKEN);
+    List<String> list = [];
+    if (local != null) {
+      final existed = local.indexOf(id);
+      print(existed);
+      list = existed > -1 ? [...local] : [...local, id];
+    } else {
+      list = [id];
+    }
+    print('local list $list');
+    final setting = await prefs.setStringList(LOCAL_FAVORITES_TOKEN, list);
+  }
+  static removeLocalFavorites() async {
+    final String id = '62297185cb2e1ef77881ddd2';
+    final prefs = await SharedPreferences.getInstance();
+    final List<String>? local = prefs.getStringList(LOCAL_FAVORITES_TOKEN);
+    if (local != null) {
+      print('local before $local');
+      final rm = local.remove(id);
+      print('local after $local');
+      final setting = await prefs.setStringList(LOCAL_FAVORITES_TOKEN, local);
+    }
+
+  }
+
+  static deleteLocalFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(LOCAL_FAVORITES_TOKEN);
   }
 }

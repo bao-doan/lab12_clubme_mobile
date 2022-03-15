@@ -9,37 +9,47 @@ import 'package:lab12_clubme_mobile/ui/utils/payload_helper.dart';
 class LibBackground extends StatelessWidget {
   final Widget? _child;
   final String? albumArt;
-  final gradients = LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: [
-        Colors.pinkAccent,
-        // Colors.purpleAccent,
-        // Colors.indigo,
-        Colors.indigoAccent,
-        // Colors.green,
-        // Colors.greenAccent,
-        // Colors.black,
-        // Colors.black54
-      ]
-  );
+  final int themeMode;
+  final List<List<Color>> themes = [
+    [
+      Colors.pinkAccent,
+      Colors.indigoAccent,
+    ],
+    [
+      Colors.purpleAccent,
+      Colors.indigo,
+    ],
+    [
+      Colors.black,
+      Colors.black54,
+    ],
+  ];
+
+  LinearGradient getGradients(int themeMode) {
+    return LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: themes[themeMode],
+    );
+  }
 
   LibBackground({
     Key? key,
     Widget? child,
     String? albumArt,
-  }) : this._child = child, this.albumArt = albumArt ,super(key: key);
+    this.themeMode = 0,
+  }) : this._child = child, this.albumArt = albumArt ?? '' ,super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return albumArt != null
+    return albumArt != null && albumArt!.isNotEmpty
       ? Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: PayloadHelper.imageFromUri(albumArt),
             fit: BoxFit.fitHeight,
           ),
-          gradient: gradients,
+          gradient: getGradients(themeMode),
         ),
         child: Stack(
           children: [
@@ -50,7 +60,7 @@ class LibBackground extends StatelessWidget {
       )
       : Container(
         decoration: BoxDecoration(
-          gradient: gradients,
+          gradient: getGradients(themeMode),
         ),
         child: _child,
       );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lab12_clubme_mobile/core/api/prefs/prefs_client.dart';
 import 'package:lab12_clubme_mobile/core/api/resources/song_rest.dart';
 import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_bottom_navigation.dart';
@@ -32,6 +33,11 @@ class _PlaylistPageState extends State<PlaylistPage> {
   void initState() {
     super.initState();
     // Provider.of<SongProvider>(context).fetch();
+    // final localAP = AppPref.appendLocalFavorites();
+    final localGT = AppPref.getAllLocalFavorites();
+    // final localRM = AppPref.removeLocalFavorites();
+    // final localAP = AppPref.deleteLocalFavorites();
+    // print('localF $localF');
   }
 
   @override
@@ -49,7 +55,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
         body: Consumer<PlayerProvider>(
           builder: (playerContext, playerProvider, playerChild) => LibBackground(
             // albumArt: 'http://res.cloudinary.com/bao-doan/image/upload/v1646882185/clubme/images/h14amecj7uok2oapzjrb.jpg',
-            // albumArt: playerProvider.song?.image?.secure_url ?? '',
+            albumArt: playerProvider.song?.artist?.image?.secure_url ?? '',
             child: SafeArea(
               bottom: false,
               child: Column(
@@ -129,15 +135,17 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   ),
                   Consumer<PlayerProvider>(
                     builder: (context, provider, child) {
-                      return provider.song == null ? SizedBox() : Padding(
+                      return provider.song == null ? SizedBox() : Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10.0
+                        ),
+                        margin: EdgeInsets.only(
+                            bottom: 10,
                         ),
                         child: LibQuickPlayPanel(),
                       );
                     },
                   ),
-                  SizedBox(height: 20.0),
                   LibBottomNavigation(),
                 ],
               ),
