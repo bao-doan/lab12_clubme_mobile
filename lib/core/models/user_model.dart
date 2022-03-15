@@ -9,7 +9,7 @@ class User implements BaseModel {
   String? username;
   String? password;
   String? avatar;
-  String? active;
+  bool? active;
   String? role;
 
 
@@ -65,7 +65,7 @@ class User implements BaseModel {
       username: map['username'] as String,
       password: map['password'] as String,
       avatar: map['avatar'] as String,
-      active: map['active'] as String,
+      active: map['active'] as bool,
       role: map['role'] as String,
       createdAt: map['createdAt'] as String,
       status: map['status'] as String,

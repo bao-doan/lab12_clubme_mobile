@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/models/song_model.dart';
+import 'package:lab12_clubme_mobile/ui/animations/lib_fade_animation.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_song_item.dart';
 import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
 // import 'package:lab12_clubme_mobile/core/data/music_data.dart';
@@ -30,9 +31,12 @@ class LibSongList extends StatelessWidget {
               color: Colors.amber,
               margin: EdgeInsets.only(bottom: 10.0),
             ),
-            child: SongItem(
-              song: list[i],
-              playing: list[i].uid == Provider.of<PlayerProvider>(context).songId,
+            child: LibFadeAnimation(
+              delay: 0.2,
+              child: SongItem(
+                song: list[i],
+                playing: list[i].uid == Provider.of<PlayerProvider>(context).songId,
+              ),
             ),
           ),
         SizedBox(

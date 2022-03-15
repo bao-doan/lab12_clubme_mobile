@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/api/prefs/prefs_client.dart';
 import 'package:lab12_clubme_mobile/core/api/resources/song_rest.dart';
 import 'package:lab12_clubme_mobile/core/models/artist_model.dart';
+import 'package:lab12_clubme_mobile/core/providers/navigation_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_bottom_navigation.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_glassmorphism.dart';
@@ -26,6 +27,7 @@ class LibDetailPage extends StatefulWidget {
   String? background;
   int? themeMode;
   List<Widget> children;
+  bool? hasHeader;
 
   @override
   _LibDetailPageState createState() => _LibDetailPageState();
@@ -34,6 +36,7 @@ class LibDetailPage extends StatefulWidget {
     this.title,
     this.background,
     this.themeMode,
+    this.hasHeader = true,
     required this.children,
   });
 }
@@ -50,7 +53,7 @@ class _LibDetailPageState extends State<LibDetailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
+              !widget.hasHeader! ? SizedBox() : Row(
                 children: [
                   IconButton(
                     onPressed: () {

@@ -25,7 +25,7 @@ class SongProvider extends ChangeNotifier {
         // final authData = auth.login();
         notifyListeners();
       }
-      catch (e) {
+      on DioError catch (e) {
         print('SongProvider $e');
       }
 

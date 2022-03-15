@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lab12_clubme_mobile/ui/animations/lib_fade_animation.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_card_item.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_glassmorphism.dart';
 import 'package:lab12_clubme_mobile/ui/pages/playlist_page/local_widgets/lib_card_artist.dart';
@@ -16,17 +17,23 @@ class SectionPanel extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text  (
-          '$label',
-          textAlign: TextAlign.start,
-          style: Theme.of(context).textTheme.headline5!.copyWith(
-            fontWeight: FontWeight.w900,
+        LibFadeAnimation(
+          delay: 0.1,
+          child: Text  (
+            '$label',
+            textAlign: TextAlign.start,
+            style: Theme.of(context).textTheme.headline5!.copyWith(
+              fontWeight: FontWeight.w900,
+            ),
           ),
         ),
         SizedBox(height: 20.0,),
         // buildScrollDisplay(),
         // buildGridDisplay(),
-        scrollable ?  buildScrollDisplay() : buildGridDisplay()
+        LibFadeAnimation(
+          delay: 0.3,
+          child: scrollable ?  buildScrollDisplay() : buildGridDisplay(),
+        )
 
       ],
     );

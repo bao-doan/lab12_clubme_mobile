@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/providers/artist_provider.dart';
+import 'package:lab12_clubme_mobile/ui/animations/lib_fade_animation.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_card_item.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_glassmorphism.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_section_panel.dart';
@@ -19,18 +20,21 @@ class SectionTags extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Wrap(
-        spacing: 10,
-        children: [
-          ...tags
-              .map((String e) => LibTagBadge(
-                tag: e,
-                onTap: () {
-                  print('Click $e');
-                },
-                ))
-              .toList()
-        ],
+      child: LibFadeAnimation(
+        delay: 0.2,
+        child: Wrap(
+          spacing: 10,
+          children: [
+            ...tags
+                .map((String e) => LibTagBadge(
+                  tag: e,
+                  onTap: () {
+                    print('Click $e');
+                  },
+                  ))
+                .toList()
+          ],
+        ),
       ),
     );
   }
