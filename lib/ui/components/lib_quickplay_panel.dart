@@ -41,39 +41,46 @@ class LibQuickPlayPanel extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    AspectRatio(
-                      aspectRatio: 1,
+                    Expanded(
                       child: GestureDetector(
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) =>
-                                provider.song == null ? Container() : PlayerPage(song: provider.song!)
+                              provider.song == null ? Container() : PlayerPage(song: provider.song!)
                               )
                           );
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: PayloadHelper.imageFromImage(provider.song?.image),
-                              fit: BoxFit.cover,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AspectRatio(
+                              aspectRatio: 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: PayloadHelper.imageFromImage(provider.song?.image),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    shape: BoxShape.circle
+                                ),
+                              ),
                             ),
-                            shape: BoxShape.circle
-                          ),
+                            SizedBox(width: 10,),
+                            Expanded(
+                              child: Text(
+                                provider.song!.title!,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                    SizedBox(width: 10,),
-                    Expanded(
-                      child: Text(
-                        provider.song!.title!,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                      )
                     ),
                     SizedBox(width: 10,),
                     provider.playing

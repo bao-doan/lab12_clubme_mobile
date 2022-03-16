@@ -13,10 +13,13 @@ import 'package:provider/provider.dart';
 class SongItem extends StatelessWidget {
   final Song _song;
   final bool _playing;
-  const SongItem({
+  final Function? onPressPlay;
+
+   const SongItem({
     Key? key,
     required Song song,
     bool playing = false,
+    this.onPressPlay,
   }) : _song = song, _playing = playing, super(key: key);
 
   @override
@@ -30,19 +33,10 @@ class SongItem extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () async {
-              final provider = Provider.of<PlayerProvider>(context, listen: false);
-              if (provider.songId != null && provider.songId!.length > 0) {
-                await provider.stopPrevSong();
-                await provider.playNewSong(song: _song);
-              }
-              else {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PlayerPage(song: _song))
-                );
-                await provider.stopPrevSong();
-                await provider.playNewSong(song: _song);
-              }
+              /** this will be applied */
+              (onPressPlay ?? (){})();
+
+              /** Below will be deprecated */
             },
             child: Container(
               width: 50.0,
@@ -58,49 +52,54 @@ class SongItem extends StatelessWidget {
           ),
           SizedBox(width: 10.0,),
           Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${_song.title}',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: _playing ? kAccentColor : kTextColor,
+            child: GestureDetector(
+              onTap: () {
+                (onPressPlay ?? (){})();
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${_song.title}',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: _playing ? kAccentColor : kTextColor,
+                    ),
                   ),
-                ),
-                SizedBox(height: 4,),
-                Row(
-                  children: [
-                    Text(
-                      '${_song.artist!.name}',
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontSize: 12,
+                  SizedBox(height: 4,),
+                  Row(
+                    children: [
+                      Text(
+                        '${_song.artist!.name}',
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                    Container(
-                      width: 4.0,
-                      height: 4.0,
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 5,
+                      Container(
+                        width: 4.0,
+                        height: 4.0,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: kTextColor,
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: kTextColor,
+                      Text(
+                        '${_song.album!.title}',
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                    Text(
-                      '${_song.album!.title}',
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                )
-              ],
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
           // Spacer(),

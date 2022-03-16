@@ -53,47 +53,51 @@ class _PlaylistPageState extends State<PlaylistPage> {
   Widget build(BuildContext context) {
     Provider.of<SongProvider>(context).fetch();
     return Consumer<SongProvider>(
-      builder: (context, provider, child) => LibDetailPage(
-        hasHeader: false,
-        children: [
-          SizedBox(
-            height: 20.0,
-          ),
+      builder: (context, provider, child) {
+        // final player = Provider.of<PlayerProvider>(context, listen: false);
+        return LibDetailPage(
+          // background: player.playlist.currentSong.image?.secure_url,
+          hasHeader: false,
+          children: [
+            SizedBox(
+              height: 20.0,
+            ),
 
-          SectionArtists(),
-          SizedBox(
-            height: 20.0,
-          ),
-          SectionTags(),
-          SizedBox(
-            height: 20.0,
-          ),
-          SectionAlbums(),
-          SizedBox(
-            height: 20.0,
-          ),
-          Text  (
-            'Explore',
-            style: Theme.of(context).textTheme.headline5!.copyWith(
-              fontWeight: FontWeight.w900,
+            SectionArtists(),
+            SizedBox(
+              height: 20.0,
             ),
-          ),
-          Text(
-            '${provider.list.length} songs',
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                fontSize: 12,
-                height: 1.5
+            SectionTags(),
+            SizedBox(
+              height: 20.0,
             ),
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
-          provider.list.isEmpty
-            ? Center(child: CircularProgressIndicator(color: kAccentColor,))
-            : LibSongList(list: provider.list),
-          // )
-        ],
-      ),
+            SectionAlbums(),
+            SizedBox(
+              height: 20.0,
+            ),
+            Text  (
+              'Explore',
+              style: Theme.of(context).textTheme.headline5!.copyWith(
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            Text(
+              '${provider.list.length} songs',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  fontSize: 12,
+                  height: 1.5
+              ),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            provider.list.isEmpty
+                ? Center(child: CircularProgressIndicator(color: kAccentColor,))
+                : LibSongList(list: provider.list),
+            // )
+          ],
+        );
+      },
     );
   }
 }

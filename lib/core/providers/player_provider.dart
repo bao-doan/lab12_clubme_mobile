@@ -12,9 +12,13 @@ class PlayerPlaylist {
   List<Song> _items = [];
   int _currentIndex = 0;
 
+
+  int get len => _items.length;
   List<Song> get items => _items;
   int get currentIndex => _currentIndex;
-  Song get currentSong => _items[_currentIndex];
+  Song get currentSong => _items.isNotEmpty ?_items[_currentIndex] : Song();
+  bool get is_first => currentIndex == 0;
+  bool get is_last => currentIndex == len - 1;
 
   setPlaylist(List<Song>? items) {
     _items = items ?? [];
@@ -54,6 +58,8 @@ class PlayerProvider extends ChangeNotifier {
   LoopState _loop = LoopState.NONE;
   LoopState get loop => _loop;
 
+  PlayerPlaylist playlist = PlayerPlaylist();
+
 
   // fetchList() async {
   //   print('PROVIDER.LIST.FETCH');
@@ -71,6 +77,11 @@ class PlayerProvider extends ChangeNotifier {
   void setSong(Song song) {
     _song = song;
     // _player.setUrl(song.fileUrl);
+  }
+
+  void setLoop(LoopState loop) {
+    _loop = loop;
+    notifyListeners();
   }
 
   PlayerProvider() {
@@ -106,8 +117,14 @@ class PlayerProvider extends ChangeNotifier {
     /**  Listen to the current state */
     _player.onPlayerStateChanged.listen((PlayerState event) {
       print('PROVIDER event $event');
+      print('PROVIDER loop $loop');
       setPlaying(event == PlayerState.PLAYING);
+      /** Loop on stop or not */
+      if (event == PlayerState.COMPLETED && loop != LoopState.NONE) {
+        restart();
+      }
     });
+
   }
 
 
@@ -135,7 +152,12 @@ class PlayerProvider extends ChangeNotifier {
         break;
       }
       case PlayerState.COMPLETED: {
-        restart();
+        /** When complete, if user seek to a position, resume instead of restart */
+        if (position.inSeconds == duration.inSeconds) {
+          restart();
+        } else {
+          resume();
+        }
         break;
       }
     }
@@ -171,6 +193,22 @@ class PlayerProvider extends ChangeNotifier {
       _playing = false;
       notifyListeners();
     // }
+  }
+
+  playPrevSong() async {
+    int current = playlist.currentIndex;
+    playlist.setCurrentIndex(current - 1);
+    Song song = playlist.currentSong;
+    await stopPrevSong();
+    await playNewSong(song: song);
+  }
+
+  playNextSong() async {
+    int current = playlist.currentIndex;
+    playlist.setCurrentIndex(current + 1);
+    Song song = playlist.currentSong;
+    await stopPrevSong();
+    await playNewSong(song: song);
   }
 
   void pause() {

@@ -46,13 +46,14 @@ class _LibPlayerControlsState extends State<LibPlayerControls> {
           Row(
             children: [
               IconButton(
-                onPressed: () {
-                  provider.stop();
+                onPressed: provider.playlist.is_first ? null : () {
+                  // provider.stop();
+                  provider.playPrevSong();
                 },
                 iconSize: 36,
                 icon: Icon(
                   Icons.skip_previous,
-                  color: Colors.pink,
+                  color: provider.playlist.is_first ? Colors.pink.withOpacity(0.5) : Colors.pink,
                 ),
               ),
               IconButton(
@@ -66,25 +67,26 @@ class _LibPlayerControlsState extends State<LibPlayerControls> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: provider.playlist.is_last ? null : () {
+                  provider.playNextSong();
+                },
                 iconSize: 36,
                 icon: Icon(
                   Icons.skip_next,
-                  color: Colors.pink,
+                  color: provider.playlist.is_last ? Colors.pink.withOpacity(0.5) : Colors.pink,
                 ),
               ),
             ],
           ),
           IconButton(
             onPressed: () {
-              setState(() {
-                loop = !loop;
-              });
+              final current = provider.loop;
+              provider.setLoop(current != LoopState.NONE ? LoopState.NONE : LoopState.ONE);
             },
             iconSize: 24,
             icon: Icon(
               Icons.loop_outlined,
-              color: loop ? Colors.greenAccent : Colors.white,
+              color: provider.loop != LoopState.NONE ? Colors.greenAccent : Colors.white,
             ),
           ),
         ],

@@ -18,32 +18,55 @@ class LibSongList extends StatelessWidget {
   Widget build(BuildContext context) {
     return list.isEmpty
         ? Center(child: CircularProgressIndicator(color: kAccentColor,))
-        : Column(
-      children: [
-        for (int i = 0; i < list.length; i++)
-          Dismissible(
-            key: Key(i.toString()),
-            background: Container(
-              color: Colors.transparent,
-              margin: EdgeInsets.only(bottom: 10.0),
-            ),
-            secondaryBackground: Container(
-              color: Colors.amber,
-              margin: EdgeInsets.only(bottom: 10.0),
-            ),
-            child: LibFadeAnimation(
-              delay: 0.2,
-              child: SongItem(
-                song: list[i],
-                playing: list[i].uid == Provider.of<PlayerProvider>(context).songId,
+        : Consumer<PlayerProvider>(
+          builder: (context, provider, child) => Column(
+            children: [
+              for (int i = 0; i < list.length; i++)
+                Dismissible(
+                  key: Key(i.toString()),
+                  background: Container(
+                    color: Colors.transparent,
+                    margin: EdgeInsets.only(bottom: 10.0),
+                  ),
+                  secondaryBackground: Container(
+                    color: Colors.amber,
+                    margin: EdgeInsets.only(bottom: 10.0),
+                  ),
+                  child: LibFadeAnimation(
+                    delay: 0.2,
+                    child: SongItem(
+                      song: list[i],
+                      playing: list[i].uid == provider.songId,
+                      onPressPlay: () async {
+                        // TODO: Set playlist, Playcurrentsong
+                        provider.playlist.setPlaylist(list);
+                        provider.playlist.setCurrentIndex(i);
+                        final currentSong = provider.playlist.currentSong;
+
+
+                        /** Play current song */
+                        if (provider.songId != null && provider.songId!.length > 0) {
+                          await provider.stopPrevSong();
+                          await provider.playNewSong(song: currentSong);
+                        }
+                        else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => PlayerPage(song: currentSong))
+                          );
+                          await provider.stopPrevSong();
+                          await provider.playNewSong(song: currentSong);
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              SizedBox(
+                height: 20.0,
               ),
-            ),
+            ],
           ),
-        SizedBox(
-          height: 20.0,
-        ),
-      ],
-    );
+        );
   }
 
   LibSongList({
