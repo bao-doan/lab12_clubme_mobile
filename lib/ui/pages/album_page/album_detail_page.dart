@@ -3,6 +3,7 @@ import 'package:lab12_clubme_mobile/core/api/prefs/prefs_client.dart';
 import 'package:lab12_clubme_mobile/core/api/resources/song_rest.dart';
 import 'package:lab12_clubme_mobile/core/models/album_model.dart';
 import 'package:lab12_clubme_mobile/core/models/artist_model.dart';
+import 'package:lab12_clubme_mobile/core/models/song_model.dart';
 import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_bottom_navigation.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_card_inline.dart';
@@ -69,7 +70,13 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
         ),
         SizedBox(height: 20.0,),
         Consumer<SongProvider>(
-          builder: (context, provider, child) => LibSongList(list: provider.list),
+          builder: (context, provider, child) =>
+            FutureBuilder<List<Song>>(
+              future: provider.fetchByAlbum(widget.album.uid ?? ''),
+                builder: (context, snapshot) => LibSongList(
+                    list: snapshot.hasData ? snapshot.data! : [],
+                ),
+            ),
         ),
       ],
     );

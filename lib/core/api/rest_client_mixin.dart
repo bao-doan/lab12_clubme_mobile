@@ -47,11 +47,12 @@ mixin RestClientMixin<T> {
 
 
 
-  Future<List> get(String path) async {
+  Future<List> get(String path, {RestQuery? query}) async {
+    query = query ?? RestQuery();
     List data = [];
     try {
       final Response<List> response = await dioClient.get<List>(buildUri(path),
-          queryParameters: RestQuery().toMap(),
+          queryParameters: query.toMap(),
       );
       if (response.data != null) {
         data = response.data!;
@@ -63,7 +64,6 @@ mixin RestClientMixin<T> {
     // 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDY4MTgzNzUsImV4cCI6MTY0NzY4MjM3NX0.HHt4QNRI6bdwhpaYkF58hKUYfEMk1BfIFHQYRQQ_PbQ
 
   }
-
 
   Future post(String path, body, Map<String, dynamic> params) async {
     final uri = '$RESOURCE_API/$path';

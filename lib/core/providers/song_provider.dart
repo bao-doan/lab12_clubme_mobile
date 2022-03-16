@@ -13,6 +13,7 @@ class SongProvider extends ChangeNotifier {
   List<Song> get list => _items;
   bool fetched = false;
   bool waiting = false;
+
   fetch() async {
     if (!fetched) {
       try {
@@ -21,8 +22,6 @@ class SongProvider extends ChangeNotifier {
         _items = data;
         waiting = false;
         fetched = true;
-
-        // final authData = auth.login();
         notifyListeners();
       }
       on DioError catch (e) {
@@ -30,5 +29,29 @@ class SongProvider extends ChangeNotifier {
       }
 
     }
+  }
+
+  Future<List<Song>> fetchByArtist(String id) async {
+    List<Song> data = [];
+    try {
+      data = await rest.fetchMultipleByArtist(id);
+      print('SongProvider fetchByArtist ${data.length}');
+    }
+    on DioError catch (e) {
+      print('SongProvider fetchByArtist DioError ${e.message}');
+    }
+    return data;
+  }
+
+  Future<List<Song>> fetchByAlbum(String id) async {
+    List<Song> data = [];
+    try {
+      data = await rest.fetchMultipleByAlbum(id);
+      print('SongProvider fetchByAlbum ${data.length}');
+    }
+    on DioError catch (e) {
+      print('SongProvider fetchByAlbum DioError ${e.message}');
+    }
+    return data;
   }
 }
