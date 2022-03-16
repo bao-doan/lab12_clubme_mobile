@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/models/song_model.dart';
+import 'package:lab12_clubme_mobile/core/providers/favorite_provider.dart';
 import 'package:lab12_clubme_mobile/ui/dialogs/add_playlist_dialog.dart';
 import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
 // import 'package:lab12_clubme_mobile/core/data/music_data.dart';
@@ -103,11 +104,14 @@ class SongItem extends StatelessWidget {
             ),
           ),
           // Spacer(),
-          LibLikeButton(
-            selected: false,
-            onTap: (value) {
-              print('$value');
-            },
+          Consumer<FavoriteProvider>(
+            builder: (context, provider, child) => LibLikeButton(
+              selected: provider.isFavorite(_song),
+              onTap: (value) {
+                print('$value');
+                value ? provider.setFavoriteSong(_song) : provider.removeFavoriteSong(_song);
+              },
+            ),
           ),
           SizedBox(width: 10,),
           LibMoreButton(

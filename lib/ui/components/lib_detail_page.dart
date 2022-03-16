@@ -95,15 +95,18 @@ class _LibDetailPageState extends State<LibDetailPage> {
               ),
               Consumer<PlayerProvider>(
                 builder: (context, provider, child) {
-                  return provider.song == null ? SizedBox() : Padding(
-                    padding: const EdgeInsets.symmetric(
+                  return provider.song == null ? SizedBox() : Container(
+                    padding: EdgeInsets.symmetric(
                         horizontal: 10.0
+                    ),
+                    margin: EdgeInsets.only(
+                      bottom: 10.0,
                     ),
                     child: LibQuickPlayPanel(),
                   );
                 },
               ),
-              SizedBox(height: 20.0),
+              // SizedBox(height: 20.0),
               LibBottomNavigation(),
             ],
           ),

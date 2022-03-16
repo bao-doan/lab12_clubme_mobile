@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/providers/album_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/artist_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/auth_provider.dart';
+import 'package:lab12_clubme_mobile/core/providers/favorite_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/navigation_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
 import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SongProvider(),),
         ChangeNotifierProvider(create: (context) => ArtistProvider(),),
         ChangeNotifierProvider(create: (context) => AlbumProvider(),),
+        ChangeNotifierProvider(create: (context) => FavoriteProvider(),),
       ],
       child: MaterialApp(
         title: 'Clubme by Lab12',

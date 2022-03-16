@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/models/song_model.dart';
+import 'package:lab12_clubme_mobile/core/providers/favorite_provider.dart';
+import 'package:lab12_clubme_mobile/ui/components/lib_like_button.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_vinyl.dart';
 import 'package:lab12_clubme_mobile/ui/dialogs/add_playlist_dialog.dart';
 import 'package:lab12_clubme_mobile/ui/pages/player_page/local_widgets/lib_player_controls.dart';
@@ -77,27 +79,40 @@ class _PlayerPageState extends State<PlayerPage> {
     );
   }
 
-  Row buildHeader(BuildContext context) {
+  Widget buildHeader(BuildContext context) {
+    // final fp = Provider.of<FavoriteProvider>(context, listen: false);
+    final pp = Provider.of<PlayerProvider>(context, listen: false);
+    final song = pp.song ?? Song();
     return Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: kTextColor,
-                    ),
-                  ),
-                  Text(
-                    'Now Playing',
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                      color: kTextColor,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              );
+      children: [
+        IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: kTextColor,
+          ),
+        ),
+        Text(
+          'Now Playing',
+          style: Theme.of(context).textTheme.headline6!.copyWith(
+            color: kTextColor,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        Spacer(),
+        Consumer<FavoriteProvider>(
+          builder: (context, fp, child) => LibLikeButton(
+            selected: fp.isFavorite(song),
+            onTap: (value) {
+              value ? fp.setFavoriteSong(song) : fp.removeFavoriteSong(song);
+            },
+          ),
+        ),
+        SizedBox(width: 15.0,)
+      ],
+    );
   }
 
   Widget buildUpperInfo() {

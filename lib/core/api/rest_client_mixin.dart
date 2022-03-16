@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:lab12_clubme_mobile/core/api/rest_query.dart';
@@ -65,16 +67,26 @@ mixin RestClientMixin<T> {
 
   Future post(String path, body, Map<String, dynamic> params) async {
     final uri = '$RESOURCE_API/$path';
-    return dioClient.post(
-      uri,
-      data: body,
-      queryParameters: params,
-    );
+    dynamic data;
+    try {
+      final response = await dioClient.post(
+        uri,
+        data: body,
+        queryParameters: params,
+      );
+      if (response.data != null) {
+        data = response.data!;
+      }
+    }
+    catch (e) {
+
+    }
+    return data;
   }
 
   Future put(String path, body, Map<String, dynamic> params) async {
     final uri = '$RESOURCE_API/$path';
-    return dioClient.put(
+    return dioClient.post(
       uri,
       data: body,
       queryParameters: params,

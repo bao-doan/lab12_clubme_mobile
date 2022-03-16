@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/api/prefs/prefs_client.dart';
 import 'package:lab12_clubme_mobile/core/api/resources/song_rest.dart';
 import 'package:lab12_clubme_mobile/core/models/artist_model.dart';
+import 'package:lab12_clubme_mobile/core/providers/favorite_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_bottom_navigation.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_detail_page.dart';
@@ -33,23 +34,32 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends State<FavoritePage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final favoriteProvider = Provider.of<FavoriteProvider>(context, listen: false);
+    favoriteProvider.fetchSongsForFavorites();
+  }
+  @override
   Widget build(BuildContext context) {
-    return LibDetailPage(
-      title: 'Favorite songs',
-      themeMode: 1,
-      children: [
-        SizedBox(height: 10.0,),
-        Text  (
-          'Songs',
-          style: Theme.of(context).textTheme.headline5!.copyWith(
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-        SizedBox(height: 20.0,),
-        Consumer<SongProvider>(
-          builder: (context, provider, child) => LibSongList(list: provider.list),
-        ),
-      ],
+    return Consumer<FavoriteProvider>(
+      builder: (context, provider, child) {
+        return LibDetailPage(
+          title: 'Favorite songs',
+          themeMode: 1,
+          children: [
+            SizedBox(height: 10.0,),
+            Text  (
+              'Songs',
+              style: Theme.of(context).textTheme.headline5!.copyWith(
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            SizedBox(height: 20.0,),
+            LibSongList(list: provider.songs),
+          ],
+        );
+      },
     );
   }
 }

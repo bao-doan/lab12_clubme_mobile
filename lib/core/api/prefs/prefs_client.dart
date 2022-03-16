@@ -75,8 +75,8 @@ class AppPref {
     return local;
   }
 
-  static appendLocalFavorites() async {
-    final String id = '62297185cb2e1ef77881ddd2';
+  static appendLocalFavorites(String id) async {
+    // final String id = '62297185cb2e1ef77881ddd2';
     final prefs = await SharedPreferences.getInstance();
     final List<String>? local = prefs.getStringList(PREFS_LOCAL_FAVORITES);
     List<String> list = [];
@@ -91,8 +91,7 @@ class AppPref {
     final setting = await prefs.setStringList(PREFS_LOCAL_FAVORITES, list);
   }
 
-  static removeLocalFavorites() async {
-    final String id = '62297185cb2e1ef77881ddd2';
+  static removeLocalFavorites(String id) async {
     final prefs = await SharedPreferences.getInstance();
     final List<String>? local = prefs.getStringList(PREFS_LOCAL_FAVORITES);
     if (local != null) {

@@ -28,7 +28,12 @@ class SongRest with RestClientMixin<Song> implements ServiceInterface<Song> {
   @override
   Future<List<Song>> fetchMultiple() async {
     final List response = await get(baseUrl);
-    // print(response);
+    final data = response.map((e) => Song.fromMap(e)).toList();
+    return data;
+  }
+
+  Future<List<Song>> fetchWithList(List<String> list) async {
+    final List response = await post('$baseUrl/getWithList', list, {});
     final data = response.map((e) => Song.fromMap(e)).toList();
     return data;
   }

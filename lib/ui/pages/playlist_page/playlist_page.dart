@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/api/prefs/prefs_client.dart';
 import 'package:lab12_clubme_mobile/core/api/resources/song_rest.dart';
+import 'package:lab12_clubme_mobile/core/providers/favorite_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_bottom_navigation.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_detail_page.dart';
@@ -34,12 +35,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   void initState() {
     super.initState();
-    // Provider.of<SongProvider>(context).fetch();
-    // final localAP = AppPref.appendLocalFavorites();
-    final localGT = AppPref.getAllLocalFavorites();
-    // final localRM = AppPref.removeLocalFavorites();
-    // final localAP = AppPref.deleteLocalFavorites();
-    // print('localF $localF');
+    final favoriteProvider = Provider.of<FavoriteProvider>(context, listen: false);
+    favoriteProvider.getFavoriteList();
   }
 
   @override
@@ -52,6 +49,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   Widget build(BuildContext context) {
     Provider.of<SongProvider>(context).fetch();
+
     return Consumer<SongProvider>(
       builder: (context, provider, child) {
         // final player = Provider.of<PlayerProvider>(context, listen: false);
@@ -93,7 +91,9 @@ class _PlaylistPageState extends State<PlaylistPage> {
             ),
             provider.list.isEmpty
                 ? Center(child: CircularProgressIndicator(color: kAccentColor,))
-                : LibSongList(list: provider.list),
+                : Consumer<FavoriteProvider>(
+                  builder: (context, fp, child) => LibSongList(list: provider.list),
+                ),
             // )
           ],
         );
