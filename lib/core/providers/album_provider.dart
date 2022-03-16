@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lab12_clubme_mobile/core/api/resources/album_rest.dart';
 import 'package:lab12_clubme_mobile/core/models/album_model.dart';
@@ -54,6 +55,18 @@ class AlbumProvider extends ChangeNotifier implements DataProviderInterface<Albu
 
     }
     // throw UnimplementedError();
+  }
+
+  Future<List<Album>> fetchByArtist(String id) async {
+    List<Album> data = [];
+    try {
+      data = await restClient.fetchMultipleByArtist(id);
+      print('AlbumProvider fetchByArtist ${data.length}');
+    }
+    on DioError catch (e) {
+      print('AlbumProvider fetchByArtist DioError ${e.message}');
+    }
+    return data;
   }
 
 }

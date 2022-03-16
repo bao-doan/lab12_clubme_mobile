@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/api/prefs/prefs_client.dart';
 import 'package:lab12_clubme_mobile/core/api/resources/song_rest.dart';
+import 'package:lab12_clubme_mobile/core/models/album_model.dart';
 import 'package:lab12_clubme_mobile/core/models/artist_model.dart';
 import 'package:lab12_clubme_mobile/core/models/song_model.dart';
+import 'package:lab12_clubme_mobile/core/providers/album_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_bottom_navigation.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_detail_page.dart';
@@ -93,7 +95,14 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
           ],
         ),
         SizedBox(height: 10.0,),
-        SectionAlbums(),
+        Consumer<AlbumProvider>(
+            builder: (context, provider, child) => FutureBuilder<List<Album>>(
+              future: provider.fetchByArtist(widget.artist.uid ?? ''),
+              builder: (context, snapshot) => SectionAlbums(
+                items: snapshot.hasData ? snapshot.data : [],
+              ),
+            ),
+        ),
         SizedBox(height: 10.0,),
         Text  (
           'Songs',

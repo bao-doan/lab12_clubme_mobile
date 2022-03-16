@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/api/rest_client_mixin.dart';
 import 'package:lab12_clubme_mobile/core/api/rest_interface.dart';
+import 'package:lab12_clubme_mobile/core/api/rest_query.dart';
 import 'package:lab12_clubme_mobile/core/models/album_model.dart';
 
 class AlbumRest with RestClientMixin<Album> implements ServiceInterface<Album> {
@@ -29,6 +30,14 @@ class AlbumRest with RestClientMixin<Album> implements ServiceInterface<Album> {
   Future<List<Album>> fetchMultiple() async {
     // TODO: implement fetchMultiple
     final List response = await get(baseUrl);
+    final data = response.map((e) => Album.fromMap(e)).toList();
+    return data;
+    throw UnimplementedError();
+  }
+
+  Future<List<Album>> fetchMultipleByArtist(String id) async {
+    // TODO: implement fetchMultiple
+    final List response = await get(baseUrl, query: RestQuery(artist: id));
     final data = response.map((e) => Album.fromMap(e)).toList();
     return data;
     throw UnimplementedError();
