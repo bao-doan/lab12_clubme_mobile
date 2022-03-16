@@ -40,6 +40,8 @@ class SongItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(builder: (context) => PlayerPage(song: _song))
                 );
+                await provider.stopPrevSong();
+                await provider.playNewSong(song: _song);
               }
             },
             child: Container(

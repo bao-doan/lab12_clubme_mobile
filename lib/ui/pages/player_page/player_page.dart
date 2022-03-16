@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/models/song_model.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_vinyl.dart';
+import 'package:lab12_clubme_mobile/ui/dialogs/add_playlist_dialog.dart';
+import 'package:lab12_clubme_mobile/ui/pages/player_page/local_widgets/lib_player_controls.dart';
+import 'package:lab12_clubme_mobile/ui/pages/player_page/local_widgets/lib_player_slider.dart';
 import 'package:lab12_clubme_mobile/ui/utils/asset_image.dart';
 import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
 // import 'package:lab12_clubme_mobile/core/data/music_data.dart';
@@ -31,14 +34,14 @@ class _PlayerPageState extends State<PlayerPage> {
   @override
   void initState() {
     super.initState();
-    play();
+    // play();
   }
 
   void play() async {
     final provider = Provider.of<PlayerProvider>(context, listen: false);
     // provider.play(path: widget.song.fileUrl);
     await provider.stopPrevSong();
-    await provider.playNewSong(song: widget.song);
+    await provider.playNewSong(song: provider.song ?? Song());
   }
 
   @override
@@ -46,43 +49,24 @@ class _PlayerPageState extends State<PlayerPage> {
     return Consumer<PlayerProvider>(
       builder: (context, provider, child) => Scaffold(
         body: LibBackground(
-          albumArt: widget.song.image?.secure_url ?? '',
+          albumArt: provider.song?.image?.secure_url ?? '',
           child: SafeArea(
             bottom: false,
             child: Column(
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: kTextColor,
-                      ),
-                    ),
-                    Text(
-                      'Now Playing',
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
-                        color: kTextColor,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
+                buildHeader(context),
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 20.0,
                     left: 20.0,
                     right: 20.0,
                   ),
-                  child: buildUpperInfo(context),
+                  child: buildUpperInfo(),
                 ),
                 Expanded(
                   child: Hero(
                     tag: 'player',
-                    child: buildPlayerControls(provider),
+                    child: buildPlayerControlPanel(),
                   ),
                 ),
               ],
@@ -93,51 +77,76 @@ class _PlayerPageState extends State<PlayerPage> {
     );
   }
 
-  Widget buildUpperInfo(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SizedBox(height: 10,),
-        Text(
-          'Listen to your favourite Music',
-          style: Theme.of(context).textTheme.subtitle1!.copyWith(
-            color: kTextColor,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        SizedBox(height: 30.0,),
-        Center(
-          child: LibVinyl(
-            spinning: true,
-          ),
-        ),
-        SizedBox(height: 20.0,),
-        Center(
-          child: Text(
-            widget.song.title!,
-            style: Theme.of(context).textTheme.headline5!.copyWith(
-                color: kTextColor,
-                fontWeight: FontWeight.w700
-            ),
-          ),
-        ),
-        SizedBox(height: 10.0,),
-        Center(
-          child: Text(
-            widget.song.artist?.name ?? '',
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: kTextColor.withOpacity(0.7),
-                fontWeight: FontWeight.w700
-            ),
-          ),
-        ),
-        SizedBox(height: 20.0,),
+  Row buildHeader(BuildContext context) {
+    return Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios_new,
+                      color: kTextColor,
+                    ),
+                  ),
+                  Text(
+                    'Now Playing',
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                      color: kTextColor,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              );
+  }
 
-      ],
+  Widget buildUpperInfo() {
+    return Consumer<PlayerProvider>(
+      builder: (context, provider, child) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 10,),
+          Text(
+            'Listen to your favourite Music',
+            style: Theme.of(context).textTheme.subtitle1!.copyWith(
+              color: kTextColor,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          SizedBox(height: 30.0,),
+          Center(
+            child: LibVinyl(
+              // spinning: provider.playing,
+            ),
+          ),
+          SizedBox(height: 20.0,),
+          Center(
+            child: Text(
+              provider.song?.title ?? 'Untitled Song',
+              style: Theme.of(context).textTheme.headline5!.copyWith(
+                  color: kTextColor,
+                  fontWeight: FontWeight.w700
+              ),
+            ),
+          ),
+          SizedBox(height: 10.0,),
+          Center(
+            child: Text(
+              provider.song?.artist?.name ?? 'Untitled Artist',
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  color: kTextColor.withOpacity(0.7),
+                  fontWeight: FontWeight.w700
+              ),
+            ),
+          ),
+          SizedBox(height: 20.0,),
+
+        ],
+      ),
     );
   }
 
-  Widget buildPlayerControls(PlayerProvider provider) {
+  Widget buildPlayerControlPanel() {
     return Container(
       padding: EdgeInsets.only(
         left: 20.0,
@@ -161,98 +170,10 @@ class _PlayerPageState extends State<PlayerPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          buildPlayerSlider(),
-          buildPlayerButtons(),
+          LibPlayerSlider(),
+          LibPlayerControls(),
         ],
       ),
-    );
-  }
-
-  Widget buildPlayerButtons() {
-    return Consumer<PlayerProvider>(
-      builder: (context, provider, child) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-            onPressed: () {
-              provider.stop();
-            },
-            iconSize: 36,
-            icon: Icon(
-              Icons.skip_previous,
-              color: Colors.pink,
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              provider.onPressPlay();
-            },
-            iconSize: 48,
-            icon: Icon(
-              provider.playing ? Icons.pause : Icons.play_arrow,
-              color: Colors.pink,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            iconSize: 36,
-            icon: Icon(
-              Icons.skip_next,
-              color: Colors.pink,
-            ),
-          ),
-        ],
-      ),
-    );
-}
-
-  Widget buildPlayerSlider() {
-    final provider = Provider.of<PlayerProvider>(context);
-    final _position = provider.position;
-    final _duration = provider.duration;
-    // final _duration = provider.song?.audio?.duration ?? 100;
-    final currentTime = '${_position.inMinutes}:${_position.inSeconds < 10 ? '0' + _position.inSeconds.toString() : _position.inSeconds}';
-    final totalTime = '${_duration.inMinutes}:${_duration.inSeconds < 10 ? '0' + _duration.inSeconds.toString() : _duration.inSeconds}';
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Text(
-          FormatHelper.getDurationTimer(provider.position.inSeconds.toDouble()),
-          style: TextStyle(
-              color: Colors.white
-          ),
-        ),
-        // SizedBox(width: 10,),
-        Expanded(
-          child: SliderTheme(
-            data: SliderThemeData(
-              thumbShape: RoundSliderThumbShape(
-                enabledThumbRadius: 6.0,
-              ),
-
-            ),
-            child: Slider(
-              value: provider.position.inSeconds.toDouble(),
-              min: 0,
-              // max: provider.duration.inSeconds.toDouble(),
-              max: provider.song?.audio?.duration ?? 120,
-              onChanged: (value) {
-                provider.onSeektoSec(value.toInt());
-              },
-              activeColor: Colors.pinkAccent,
-              inactiveColor: Colors.greenAccent,
-
-            ),
-          ),
-        ),
-        // SizedBox(width: 10,),
-        Text(
-          FormatHelper.getDurationTimer(provider.song?.audio?.duration ?? 0),
-          style: TextStyle(
-              color: Colors.white
-          ),
-        )
-      ],
     );
   }
 

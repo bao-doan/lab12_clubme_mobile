@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:lab12_clubme_mobile/core/environments/env.dart';
 import 'package:lab12_clubme_mobile/core/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,48 +34,51 @@ readPrefs() async {
 }
 
 class AppPref {
+  static final PREFS_LOCAL_USER = Env.PREFS_LOCAL_USER;
+  static final PREFS_LOCAL_FAVORITES = Env.PREFS_LOCAL_FAVORITES;
+
   static prefs() {
     return SharedPreferences.getInstance();
   }
 
+  /** Local User */
+
   static setLocalUser(User user) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('clubme_user', json.encode(user));
+    prefs.setString(PREFS_LOCAL_USER, json.encode(user));
   }
 
   static Future<User> getLocalUser() async {
     final prefs = await SharedPreferences.getInstance();
-    final user = prefs.getString('clubme_user');
+    final user = prefs.getString(PREFS_LOCAL_USER);
     final data = json.decode(user ?? '');
     final result = User.fromMap(data);
     return result;
   }
+
   static getLocalToken() async {
     final prefs = await SharedPreferences.getInstance();
     final user = await getLocalUser();
     // return user['access_token'];
   }
 
-  static removeLocalUser() async{
+  static removeLocalUser() async {
     final prefs = await SharedPreferences.getInstance();
   }
 
   /** Song, Player data */
 
-  static String LOCAL_FAVORITES_TOKEN = 'local_favorites';
-
   static getAllLocalFavorites() async {
     final prefs = await SharedPreferences.getInstance();
-    final local = prefs.getStringList(LOCAL_FAVORITES_TOKEN);
-    print('local $local');
+    final local = prefs.getStringList(PREFS_LOCAL_FAVORITES);
+    print('getAllLocalFavorites $local');
     return local;
-
   }
+
   static appendLocalFavorites() async {
     final String id = '62297185cb2e1ef77881ddd2';
-    // 62297185cb2e1ef77881ddd2
     final prefs = await SharedPreferences.getInstance();
-    final List<String>? local = prefs.getStringList(LOCAL_FAVORITES_TOKEN);
+    final List<String>? local = prefs.getStringList(PREFS_LOCAL_FAVORITES);
     List<String> list = [];
     if (local != null) {
       final existed = local.indexOf(id);
@@ -83,24 +87,24 @@ class AppPref {
     } else {
       list = [id];
     }
-    print('local list $list');
-    final setting = await prefs.setStringList(LOCAL_FAVORITES_TOKEN, list);
+    print('appendLocalFavorites $list');
+    final setting = await prefs.setStringList(PREFS_LOCAL_FAVORITES, list);
   }
+
   static removeLocalFavorites() async {
     final String id = '62297185cb2e1ef77881ddd2';
     final prefs = await SharedPreferences.getInstance();
-    final List<String>? local = prefs.getStringList(LOCAL_FAVORITES_TOKEN);
+    final List<String>? local = prefs.getStringList(PREFS_LOCAL_FAVORITES);
     if (local != null) {
-      print('local before $local');
+      print('removeLocalFavorites before $local');
       final rm = local.remove(id);
-      print('local after $local');
-      final setting = await prefs.setStringList(LOCAL_FAVORITES_TOKEN, local);
+      print('removeLocalFavorites after $local');
+      final setting = await prefs.setStringList(PREFS_LOCAL_FAVORITES, local);
     }
-
   }
 
   static deleteLocalFavorites() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove(LOCAL_FAVORITES_TOKEN);
+    prefs.remove(PREFS_LOCAL_FAVORITES);
   }
 }

@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:lab12_clubme_mobile/core/api/rest_query.dart';
+import 'package:lab12_clubme_mobile/core/environments/env.dart';
 import 'package:lab12_clubme_mobile/core/models/song_model.dart';
 
-String RESOURCE_API = 'http://localhost:3000';
+
 
 class DioClient {
   Dio init() {
@@ -38,6 +39,7 @@ class DioClient {
 }
 
 mixin RestClientMixin<T> {
+  final RESOURCE_API = Env.RESOURCE_API;
 
   Dio dioClient = DioClient().init();
 

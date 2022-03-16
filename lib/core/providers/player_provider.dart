@@ -4,6 +4,28 @@ import 'package:lab12_clubme_mobile/core/models/song_model.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+enum LoopState {
+  NONE, ONE, ALL
+}
+
+class PlayerPlaylist {
+  List<Song> _items = [];
+  int _currentIndex = 0;
+
+  List<Song> get items => _items;
+  int get currentIndex => _currentIndex;
+  Song get currentSong => _items[_currentIndex];
+
+  setPlaylist(List<Song>? items) {
+    _items = items ?? [];
+  }
+
+  setCurrentIndex(int? index) {
+    _currentIndex = index ?? 0;
+  }
+
+}
+
 class PlayerProvider extends ChangeNotifier {
   late AudioPlayer _player = AudioPlayer(
     mode: PlayerMode.MEDIA_PLAYER,
@@ -28,6 +50,10 @@ class PlayerProvider extends ChangeNotifier {
 
   List<Song> _list = [];
   List<Song> get list => _list;
+
+  LoopState _loop = LoopState.NONE;
+  LoopState get loop => _loop;
+
 
   // fetchList() async {
   //   print('PROVIDER.LIST.FETCH');
