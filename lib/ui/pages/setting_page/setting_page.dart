@@ -45,11 +45,11 @@ class _SettingPageState extends State<SettingPage> {
       themeMode: 2,
       children: [
         SizedBox(height: 20,),
-        LibFadeAnimation(
-          child: auth
-              ? buildProfile()
-              : buildAuthButtons(context),
-        ),
+        // LibFadeAnimation(
+        //   child: auth
+        //       ? buildProfile()
+        //       : buildAuthButtons(context),
+        // ),
         SizedBox(height: 50,),
         LibFadeAnimation(
           delay: 0.2,

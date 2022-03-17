@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lab12_clubme_mobile/core/api/prefs/prefs_client.dart';
 import 'package:lab12_clubme_mobile/core/api/resources/song_rest.dart';
+import 'package:lab12_clubme_mobile/core/providers/album_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/favorite_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
 import 'package:lab12_clubme_mobile/ui/components/lib_bottom_navigation.dart';
@@ -69,7 +70,12 @@ class _PlaylistPageState extends State<PlaylistPage> {
             SizedBox(
               height: 20.0,
             ),
-            SectionAlbums(),
+            Consumer<AlbumProvider>(
+              builder: (context, provider, child) => SectionAlbums(
+                items: provider.items,
+                waiting: provider.waiting,
+              ),
+            ),
             SizedBox(
               height: 20.0,
             ),
@@ -89,11 +95,12 @@ class _PlaylistPageState extends State<PlaylistPage> {
             SizedBox(
               height: 20.0,
             ),
-            provider.list.isEmpty
-                ? Center(child: CircularProgressIndicator(color: kAccentColor,))
-                : Consumer<FavoriteProvider>(
-                  builder: (context, fp, child) => LibSongList(list: provider.list),
-                ),
+            Consumer<FavoriteProvider>(
+              builder: (context, fp, child) => LibSongList(
+                  list: provider.list,
+                  waiting: provider.waiting,
+              ),
+            ),
             // )
           ],
         );

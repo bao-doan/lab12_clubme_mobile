@@ -14,6 +14,7 @@ class FavoriteProvider extends ChangeNotifier {
   List<String> get favorites => _favorites;
 
   List<Song> get songs => _songs;
+  bool waiting = false;
 
   FavoriteProvider() {
     // retrieveIdList();
@@ -35,12 +36,14 @@ class FavoriteProvider extends ChangeNotifier {
     final localFavs = await getFavoriteList();
     if (localFavs != null) {
       try {
+        waiting = true;
         final List<Song> data = await songRest.fetchWithList(localFavs);
         _songs = data;
       }
       on DioError catch (e) {
         print('FavoriteProvider fetchSongsForFavorites DioError ${e.response?.statusMessage}');
       }
+      waiting = false;
     }
     notifyListeners();
   }

@@ -8,37 +8,27 @@ import 'package:provider/provider.dart';
 
 class SectionAlbums extends StatefulWidget {
   List<Album>? items;
+  bool waiting;
 
   @override
   State<SectionAlbums> createState() => _SectionAlbumsState();
 
   SectionAlbums({
     this.items,
+    required this.waiting,
   });
 }
 
 class _SectionAlbumsState extends State<SectionAlbums> {
   @override
   Widget build(BuildContext context) {
-    return widget.items != null
-        ?  SectionPanel(
+    return SectionPanel(
           label: 'Albums',
           scrollable: true,
+          waiting: widget.waiting,
           children: [
             ...widget.items!.map((Album item) => LibCardAlbum(album: item,)).toList()
           ],
-        )
-        : Consumer<AlbumProvider>(
-          builder: (context, provider, child) => SectionPanel(
-            label: 'Albums',
-            scrollable: true,
-            children: [
-              for (int i = 0; i < provider.items.length; i ++)
-                LibCardAlbum(
-                  album: provider.items[i],
-                )
-            ],
-          ),
-    );
+        );
   }
 }

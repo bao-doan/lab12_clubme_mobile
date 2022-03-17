@@ -13,6 +13,8 @@ class SongProvider extends ChangeNotifier {
   List<Song> get list => _items;
   bool fetched = false;
   bool waiting = false;
+  bool waitingForAlbum = false;
+  bool waitingForArtist = false;
 
   fetch() async {
     if (!fetched) {
@@ -34,24 +36,28 @@ class SongProvider extends ChangeNotifier {
   Future<List<Song>> fetchByArtist(String id) async {
     List<Song> data = [];
     try {
+      waitingForArtist = true;
       data = await rest.fetchMultipleByArtist(id);
       print('SongProvider fetchByArtist ${data.length}');
     }
     on DioError catch (e) {
       print('SongProvider fetchByArtist DioError ${e.message}');
     }
+    waitingForArtist = false;
     return data;
   }
 
   Future<List<Song>> fetchByAlbum(String id) async {
     List<Song> data = [];
     try {
+      waitingForAlbum = true;
       data = await rest.fetchMultipleByAlbum(id);
       print('SongProvider fetchByAlbum ${data.length}');
     }
     on DioError catch (e) {
       print('SongProvider fetchByAlbum DioError ${e.message}');
     }
+    waitingForAlbum = false;
     return data;
   }
 }

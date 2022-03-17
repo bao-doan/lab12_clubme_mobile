@@ -56,7 +56,10 @@ class _FavoritePageState extends State<FavoritePage> {
               ),
             ),
             SizedBox(height: 20.0,),
-            LibSongList(list: provider.songs),
+            LibSongList(
+              list: provider.songs,
+              waiting: provider.waiting,
+            ),
           ],
         );
       },

@@ -100,6 +100,7 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
               future: provider.fetchByArtist(widget.artist.uid ?? ''),
               builder: (context, snapshot) => SectionAlbums(
                 items: snapshot.hasData ? snapshot.data : [],
+                waiting: provider.waitingForOne,
               ),
             ),
         ),
@@ -117,6 +118,7 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
                 future: provider.fetchByArtist(widget.artist.uid ?? ''),
                 builder: (context, snapshot) => LibSongList(
                     list: snapshot.hasData ? snapshot.data! : [],
+                  waiting: provider.waitingForArtist,
                 ),
             ),
         ),

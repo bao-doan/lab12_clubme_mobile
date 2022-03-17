@@ -21,6 +21,7 @@ class _SectionArtistsState extends State<SectionArtists> {
   Widget build(BuildContext context) {
     return Consumer<ArtistProvider>(
       builder: (context, provider, child) => SectionPanel(
+          waiting: provider.waiting,
           label: 'Artists',
           scrollable: true,
           children: [

@@ -31,6 +31,7 @@ class AlbumProvider extends ChangeNotifier implements DataProviderInterface<Albu
 
   @override
   bool waiting = false;
+  bool waitingForOne = false;
 
 
   AlbumProvider() {
@@ -60,10 +61,13 @@ class AlbumProvider extends ChangeNotifier implements DataProviderInterface<Albu
   Future<List<Album>> fetchByArtist(String id) async {
     List<Album> data = [];
     try {
+      waitingForOne = true;
       data = await restClient.fetchMultipleByArtist(id);
       print('AlbumProvider fetchByArtist ${data.length}');
+      waitingForOne = false;
     }
     on DioError catch (e) {
+      waitingForOne = false;
       print('AlbumProvider fetchByArtist DioError ${e.message}');
     }
     return data;

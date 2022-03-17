@@ -74,7 +74,8 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
             FutureBuilder<List<Song>>(
               future: provider.fetchByAlbum(widget.album.uid ?? ''),
                 builder: (context, snapshot) => LibSongList(
-                    list: snapshot.hasData ? snapshot.data! : [],
+                  list: snapshot.hasData ? snapshot.data! : [],
+                  waiting: provider.waitingForAlbum,
                 ),
             ),
         ),
