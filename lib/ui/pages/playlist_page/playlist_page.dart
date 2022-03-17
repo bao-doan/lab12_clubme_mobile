@@ -44,7 +44,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    Provider.of<PlayerProvider>(context).dispose();
   }
 
   @override

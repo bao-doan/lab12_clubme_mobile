@@ -5,6 +5,8 @@ import 'package:lab12_clubme_mobile/core/providers/auth_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/favorite_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/navigation_provider.dart';
 import 'package:lab12_clubme_mobile/core/providers/song_provider.dart';
+import 'package:lab12_clubme_mobile/ui/pages/favorite_page/favorite_page.dart';
+import 'package:lab12_clubme_mobile/ui/pages/setting_page/setting_page.dart';
 import 'package:lab12_clubme_mobile/ui/utils/constants.dart';
 import 'package:lab12_clubme_mobile/core/data/music_data.dart';
 import 'package:lab12_clubme_mobile/ui/pages/player_page/player_page.dart';
@@ -55,7 +57,12 @@ class MyApp extends StatelessWidget {
               ),
             )
         ),
-        home: PlaylistPage(),
+        initialRoute: 'explore',
+        routes: {
+          'explore': (context) => PlaylistPage(),
+          'favorites': (context) => FavoritePage(),
+          'settings': (context) => SettingPage(),
+        },
       ),
     );
   }

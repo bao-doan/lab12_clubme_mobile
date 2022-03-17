@@ -39,33 +39,18 @@ class _LibBottomNavigationState extends State<LibBottomNavigation> {
             onTap: (int index) {
               switch (index) {
                 case 0: {
-                  provider.setCurrentIndex(0);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PlaylistPage(),
-                    ),
-                  );
+                  provider.navigate('explore');
+                  Navigator.pushNamed(context, 'explore');
                   break;
                 }
                 case 1: {
-                  provider.setCurrentIndex(1);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => FavoritePage(),
-                    ),
-                  );
+                  provider.navigate('favorites');
+                  Navigator.pushNamed(context, 'favorites');
                   break;
                 }
                 case 2: {
-                  provider.setCurrentIndex(2);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SettingPage(),
-                    ),
-                  );
+                  provider.navigate('settings');
+                  Navigator.pushNamed(context, 'settings');
                   break;
                 }
               }

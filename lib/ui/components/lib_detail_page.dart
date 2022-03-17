@@ -45,70 +45,76 @@ class _LibDetailPageState extends State<LibDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LibBackground(
-        albumArt: widget.background ?? '',
-        themeMode: widget.themeMode ?? 0,
-        child: SafeArea(
-          bottom: false,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              !widget.hasHeader! ? SizedBox() : Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: kTextColor,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      widget.title ?? 'Title',
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
-                        color: kTextColor,
-                        fontWeight: FontWeight.w700,
+      body: WillPopScope(
+        onWillPop: () async => false,
+        child: LibBackground(
+          albumArt: widget.background ?? '',
+          themeMode: widget.themeMode ?? 0,
+          child: SafeArea(
+            bottom: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                !widget.hasHeader! ? SizedBox() : Row(
+                  children: [
+                    Consumer<NavigationProvider>(
+                      builder: (context, provider, child) => IconButton(
+                        onPressed: () async {
+                          Navigator.of(context).pop();
+                          provider.back();
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_ios_new,
+                          color: kTextColor,
+                        ),
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
                     ),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10.0,
-                      right: 10.0,
+                    Expanded(
+                      child: Text(
+                        widget.title ?? 'Title',
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                          color: kTextColor,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ...widget.children
-                      ],
+                  ],
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 10.0,
+                        right: 10.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ...widget.children
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Consumer<PlayerProvider>(
-                builder: (context, provider, child) {
-                  return provider.song == null ? SizedBox() : Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 10.0
-                    ),
-                    margin: EdgeInsets.only(
-                      bottom: 10.0,
-                    ),
-                    child: LibQuickPlayPanel(),
-                  );
-                },
-              ),
-              // SizedBox(height: 20.0),
-              LibBottomNavigation(),
-            ],
+                Consumer<PlayerProvider>(
+                  builder: (context, provider, child) {
+                    return provider.song == null ? SizedBox() : Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.0
+                      ),
+                      margin: EdgeInsets.only(
+                        bottom: 10.0,
+                      ),
+                      child: LibQuickPlayPanel(),
+                    );
+                  },
+                ),
+                // SizedBox(height: 20.0),
+                LibBottomNavigation(),
+              ],
+            ),
           ),
         ),
       ),
