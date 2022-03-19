@@ -61,8 +61,6 @@ mixin RestClientMixin<T> {
     catch (e) {}
     return data;
 
-    // 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDY4MTgzNzUsImV4cCI6MTY0NzY4MjM3NX0.HHt4QNRI6bdwhpaYkF58hKUYfEMk1BfIFHQYRQQ_PbQ
-
   }
 
   Future post(String path, body, Map<String, dynamic> params) async {
