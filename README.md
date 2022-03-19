@@ -4,6 +4,10 @@
 - An online music platform made with Flutter & Cloud services.
 - Application is under development.
 
+## Video Demo
+
+[▶️ Watch Demo 👀](https://res.cloudinary.com/bao-doan/video/upload/v1647673806/techdemo/IntroduceClubmeFlutterMobileAp_720p.mp4)
+
 ## Author
 
 - Creator/Owner name: [Bao Doan](baodoan.tech@gmail.com)
@@ -12,7 +16,7 @@
 ## Platforms
 
 Build for:
-- IOS: Ready Beta 🔥.
+- IOS: Ready 🔥.
 - Android: (Incoming ⏰).
 
 Technologies:
